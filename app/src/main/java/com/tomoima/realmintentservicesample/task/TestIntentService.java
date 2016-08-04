@@ -29,6 +29,7 @@ public class TestIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         realm = Realm.getDefaultInstance();
+        Log.d("Intent","¥created");
         Observable<RealmResults<Person>> resultsObservable = realm.where(Person.class).findAllAsync().asObservable();
         resultsObservable.filter(responses -> responses.isLoaded())
                 .subscribe(cnt -> {
