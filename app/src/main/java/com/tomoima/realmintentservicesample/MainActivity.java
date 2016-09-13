@@ -11,6 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -67,18 +68,14 @@ public class MainActivity extends AppCompatActivity {
                 new IntentFilter(Const.BROADCAST_ACTION));
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(driveTaskCompleteReceiver != null) {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(driveTaskCompleteReceiver);
-        }
-    }
 
     @Override
     protected void onDestroy() {
         if (client != null) {
             client.disconnect();
+        }
+        if(driveTaskCompleteReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(driveTaskCompleteReceiver);
         }
         super.onDestroy();
     }
@@ -119,10 +116,13 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
     }
 
+    private void updateView(String message){
+        TextView.class.cast(findViewById(R.id.update_text)).setText(message);
+    }
+
     /**
      * BroadCastReceiver
      */
-
 
     private class DriveTaskCompleteReceiver extends BroadcastReceiver {
         @Override
@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             TestIntentService.GoogleDriveResult googleDriveResult
                     =(TestIntentService.GoogleDriveResult) intent.getSerializableExtra(Const.EXTENDED_DATA_STATUS);
             Toast.makeText(context, googleDriveResult.message, Toast.LENGTH_LONG ).show();
+            updateView(googleDriveResult.message);
         }
     }
 

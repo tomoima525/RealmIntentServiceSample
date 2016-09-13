@@ -75,7 +75,6 @@ public class TestIntentService extends IntentService {
             parsedResponse = LOAD_ERROR;
         }
 
-        System.out.println("¥¥ process");
         GoogleDriveResult result = uploadToDrive(parsedResponse);
         long count = realm.where(Person.class).count();
         finishProcess(result, count);
@@ -145,6 +144,7 @@ public class TestIntentService extends IntentService {
             googleDriveResult.message = "Drive upload success" + googleDriveResult.size;
 
         }
+
         return googleDriveResult;
     }
 
