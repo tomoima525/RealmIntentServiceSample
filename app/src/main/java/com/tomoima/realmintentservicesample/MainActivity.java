@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Life cycles
-     *
      */
 
     @Override
@@ -128,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
     private class DriveTaskCompleteReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            TestIntentService.GoogleDriveResult googleDriveResult =(TestIntentService.GoogleDriveResult) intent.getSerializableExtra(Const.EXTENDED_DATA_STATUS);
+            TestIntentService.GoogleDriveResult googleDriveResult
+                    =(TestIntentService.GoogleDriveResult) intent.getSerializableExtra(Const.EXTENDED_DATA_STATUS);
             Toast.makeText(context, googleDriveResult.message, Toast.LENGTH_LONG ).show();
         }
     }

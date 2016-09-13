@@ -41,6 +41,23 @@ public class TestIntentService extends IntentService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        GoogleApiClient.Builder builder = new GoogleApiClient.Builder(getApplicationContext())
+                .addApi(Drive.API)
+                .addScope(Drive.SCOPE_FILE);
+        client = builder.build();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (client != null && client.isConnected()) {
+            client.disconnect();
+        }
+    }
+
+    @Override
     protected void onHandleIntent(Intent intent) {
         client.blockingConnect(30, TimeUnit.SECONDS);
         //Retrieve all data from RealmDB
@@ -58,6 +75,7 @@ public class TestIntentService extends IntentService {
             parsedResponse = LOAD_ERROR;
         }
 
+        System.out.println("¥¥ process");
         GoogleDriveResult result = uploadToDrive(parsedResponse);
         long count = realm.where(Person.class).count();
         finishProcess(result, count);
